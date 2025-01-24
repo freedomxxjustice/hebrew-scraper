@@ -37,19 +37,21 @@ def fetch_hebrew_definition(word):
                     break
         return definition
     else:
-        return None, None
+        return
 
 
 def fetch_english_translation(word):
     url = f"https://context.reverso.net/translation/hebrew-english/{word}"
     headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36" # Needed for access to the site
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"  # Needed for access to the site
     }
     response = requests.get(url, headers=headers)
     print(response.status_code)
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, "html.parser")
-        translation_list = soup.findAll("span", class_="display-term") # Get translations from Reverso
+        translation_list = soup.findAll(
+            "span", class_="display-term"
+        )  # Get translations from Reverso
         translation = ""
         # Sort translations to display no more than 4
         for i in range(len(translation_list)):
@@ -67,7 +69,7 @@ def fetch_english_translation(word):
                     break
         return str(translation)
     else:
-        return None, None
+        return
 
 
 def fetch_russian_translation(word):
@@ -96,7 +98,7 @@ def fetch_russian_translation(word):
                     break
         return str(translation)
     else:
-        return None, None
+        return
 
 
 def fetch_hebrew_image(word):
@@ -107,12 +109,12 @@ def fetch_hebrew_image(word):
             soup = BeautifulSoup(response.content, "html.parser")
             image = soup.findAll("img", src=True)[1]
             if image is None:
-                return None, None
+                return
             return str(image)
         except Exception:
-            return None, None
+            return
     else:
-        return None, None
+        return
 
 
 def fetch_hebrew_info(word):
@@ -123,12 +125,12 @@ def fetch_hebrew_info(word):
             soup = BeautifulSoup(response.content, "html.parser")
             info = soup.find("div", class_="sr_e").find("div").find("a").text
             if info is None:
-                return None, None
+                return
             return info
         except Exception:
-            return None, None
+            return
     else:
-        return None, None
+        return
 
 
 def fetch_hebrew_forms(word):
@@ -147,14 +149,14 @@ def fetch_hebrew_forms(word):
                     "table", class_="table table-condensed conjugation-table"
                 )
                 if forms is None:
-                    return None, None
+                    return
                 return str(forms)
             else:
-                return None, None
+                return
         except Exception:
-            return None, None
+            return
     else:
-        return None, None
+        return
 
 
 # Adding our custom model/template for notes
@@ -341,12 +343,14 @@ def add_english_model():
     field_4 = mm.newField("Info")
     field_5 = mm.newField("English")
     field_6 = mm.newField("Forms")
+    field_7 = mm.newField("Audio Optional")
     mm.addField(model, field_1)
     mm.addField(model, field_2)
     mm.addField(model, field_3)
     mm.addField(model, field_4)
     mm.addField(model, field_5)
     mm.addField(model, field_6)
+    mm.addField(model, field_7)
 
     # Define card templates
     template = mm.newTemplate("Card 1")
@@ -566,12 +570,14 @@ def add_russian_model():
     field_4 = mm.newField("Info")
     field_5 = mm.newField("Russian")
     field_6 = mm.newField("Forms")
+    field_7 = mm.newField("Audio Optional")
     mm.addField(model, field_1)
     mm.addField(model, field_2)
     mm.addField(model, field_3)
     mm.addField(model, field_4)
     mm.addField(model, field_5)
     mm.addField(model, field_6)
+    mm.addField(model, field_7)
 
     # Define card templates
     template = mm.newTemplate("Card 1")
